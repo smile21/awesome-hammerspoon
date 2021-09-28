@@ -15,7 +15,8 @@ obj.homepage = "https://github.com/Hammerspoon/Spoons"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 function obj:init()
-    self.canvas = hs.canvas.new({x=0, y=0, w=0, h=0}):show()
+    -- self.canvas = hs.canvas.new({x=0, y=0, w=0, h=0}):show()
+    self.canvas = hs.canvas.new({x=0, y=0, w=0, h=0})
     self.canvas[1] = {
         type = "text",
         text = "",
@@ -37,7 +38,8 @@ function obj:toggleShow()
         self.timer = nil
         self.canvas:hide()
     else
-        local mainScreen = hs.screen.mainScreen()
+        -- local mainScreen = hs.screen.mainScreen()
+        local mainScreen = hs.screen.primaryScreen()
         local mainRes = mainScreen:fullFrame()
         self.canvas:frame({
             x = (mainRes.w-300)/2,
@@ -47,7 +49,7 @@ function obj:toggleShow()
         })
         self.canvas[1].text = os.date("%H:%M")
         self.canvas:show()
-        self.timer = hs.timer.doAfter(4, function()
+        self.timer = hs.timer.doAfter(2, function()
             self.canvas:hide()
             self.timer = nil
         end)

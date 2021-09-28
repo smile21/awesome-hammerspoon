@@ -6,10 +6,11 @@ hs.window.animationDuration = 0
 custom_config = hs.fs.pathToAbsolute(os.getenv("HOME") .. '/.config/hammerspoon/private/config.lua')
 if custom_config then
     print("Loading custom config")
-    dofile( os.getenv("HOME") .. "/.config/hammerspoon/private/config.lua")
+    dofile(os.getenv("HOME") .. "/.config/hammerspoon/private/config.lua")
     privatepath = hs.fs.pathToAbsolute(hs.configdir .. '/private/config.lua')
     if privatepath then
-        hs.alert("You have config in both .config/hammerspoon and .hammerspoon/private.\nThe .config/hammerspoon one will be used.")
+        hs.alert(
+            "You have config in both .config/hammerspoon and .hammerspoon/private.\nThe .config/hammerspoon one will be used.")
     end
 else
     -- otherwise fallback to 'classic' location.
@@ -27,7 +28,9 @@ end
 
 hsreload_keys = hsreload_keys or {{"cmd", "shift", "ctrl"}, "R"}
 if string.len(hsreload_keys[2]) > 0 then
-    hs.hotkey.bind(hsreload_keys[1], hsreload_keys[2], "Reload Configuration", function() hs.reload() end)
+    hs.hotkey.bind(hsreload_keys[1], hsreload_keys[2], "Reload Configuration", function()
+        hs.reload()
+    end)
 end
 
 -- ModalMgr Spoon must be loaded explicitly, because this repository heavily relies upon it.
@@ -35,19 +38,9 @@ hs.loadSpoon("ModalMgr")
 
 -- Define default Spoons which will be loaded later
 if not hspoon_list then
-    hspoon_list = {
-        "AClock",
-        "BingDaily",
-        "CircleClock",
-        "ClipShow",
-        "CountDown",
-        "HCalendar",
-        "HSaria2",
-        "HSearch",
-        "SpeedMenu",
-        "WinWin",
-        "FnMate",
-    }
+    hspoon_list = {"AClock", -- "BingDaily",
+    "CircleClock", "ClipShow", "CountDown", "HCalendar", "HSaria2", "HSearch", "SpeedMenu", "WinWin", "FnMate",
+                   "UnsplashZ"}
 end
 
 -- Load those Spoons
@@ -71,17 +64,35 @@ end
 -- appM modal environment
 spoon.ModalMgr:new("appM")
 local cmodal = spoon.ModalMgr.modal_list["appM"]
-cmodal:bind('', 'escape', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
-cmodal:bind('', 'Q', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
-cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+cmodal:bind('', 'escape', 'Deactivate appM', function()
+    spoon.ModalMgr:deactivate({"appM"})
+end)
+cmodal:bind('', 'Q', 'Deactivate appM', function()
+    spoon.ModalMgr:deactivate({"appM"})
+end)
+cmodal:bind('', 'tab', 'Toggle Cheatsheet', function()
+    spoon.ModalMgr:toggleCheatsheet()
+end)
 if not hsapp_list then
-    hsapp_list = {
-        {key = 'f', name = 'Finder'},
-        {key = 's', name = 'Safari'},
-        {key = 't', name = 'Terminal'},
-        {key = 'v', id = 'com.apple.ActivityMonitor'},
-        {key = 'y', id = 'com.apple.systempreferences'},
-    }
+    hsapp_list = {{
+        key = 'f',
+        name = 'Finder'
+    }, {
+        key = 's',
+        name = 'Safari'
+    }, {
+        key = 't',
+        name = 'iTerm'
+    }, {
+        key = 'm',
+        name = 'Mail'
+    }, {
+        key = 'v',
+        id = 'com.apple.ActivityMonitor'
+    }, {
+        key = 'y',
+        id = 'com.apple.systempreferences'
+    }}
 end
 for _, v in ipairs(hsapp_list) do
     if v.id then
@@ -139,11 +150,6 @@ if spoon.ClipShow then
         spoon.ClipShow:toggleShow()
         spoon.ModalMgr:deactivate({"clipshowM"})
     end)
-    cmodal:bind('', 'M', 'Open in MacVim', function()
-        spoon.ClipShow:openWithCommand("/usr/local/bin/mvim")
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
     cmodal:bind('', 'F', 'Save to Desktop', function()
         spoon.ClipShow:saveToFile()
         spoon.ClipShow:toggleShow()
@@ -159,8 +165,8 @@ if spoon.ClipShow then
         spoon.ClipShow:toggleShow()
         spoon.ModalMgr:deactivate({"clipshowM"})
     end)
-    cmodal:bind('', 'L', 'Open in Sublime Text', function()
-        spoon.ClipShow:openWithCommand("/usr/local/bin/subl")
+    cmodal:bind('', 'L', 'Open in vscode', function()
+        spoon.ClipShow:openWithCommand("/usr/local/bin/code")
         spoon.ClipShow:toggleShow()
         spoon.ModalMgr:deactivate({"clipshowM"})
     end)
@@ -190,7 +196,9 @@ if spoon.HSaria2 then
 
     hsaria2_keys = hsaria2_keys or {"alt", "D"}
     if string.len(hsaria2_keys[2]) > 0 then
-        spoon.ModalMgr.supervisor:bind(hsaria2_keys[1], hsaria2_keys[2], 'Toggle aria2 Panel', function() spoon.HSaria2:togglePanel() end)
+        spoon.ModalMgr.supervisor:bind(hsaria2_keys[1], hsaria2_keys[2], 'Toggle aria2 Panel', function()
+            spoon.HSaria2:togglePanel()
+        end)
     end
 end
 
@@ -199,7 +207,9 @@ end
 if spoon.HSearch then
     hsearch_keys = hsearch_keys or {"alt", "G"}
     if string.len(hsearch_keys[2]) > 0 then
-        spoon.ModalMgr.supervisor:bind(hsearch_keys[1], hsearch_keys[2], 'Launch Hammerspoon Search', function() spoon.HSearch:toggleShow() end)
+        spoon.ModalMgr.supervisor:bind(hsearch_keys[1], hsearch_keys[2], 'Launch Hammerspoon Search', function()
+            spoon.HSearch:toggleShow()
+        end)
     end
 end
 
@@ -219,9 +229,15 @@ end
 if spoon.CountDown then
     spoon.ModalMgr:new("countdownM")
     local cmodal = spoon.ModalMgr.modal_list["countdownM"]
-    cmodal:bind('', 'escape', 'Deactivate countdownM', function() spoon.ModalMgr:deactivate({"countdownM"}) end)
-    cmodal:bind('', 'Q', 'Deactivate countdownM', function() spoon.ModalMgr:deactivate({"countdownM"}) end)
-    cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+    cmodal:bind('', 'escape', 'Deactivate countdownM', function()
+        spoon.ModalMgr:deactivate({"countdownM"})
+    end)
+    cmodal:bind('', 'Q', 'Deactivate countdownM', function()
+        spoon.ModalMgr:deactivate({"countdownM"})
+    end)
+    cmodal:bind('', 'tab', 'Toggle Cheatsheet', function()
+        spoon.ModalMgr:toggleCheatsheet()
+    end)
     cmodal:bind('', '0', '5 Minutes Countdown', function()
         spoon.CountDown:startFor(5)
         spoon.ModalMgr:deactivate({"countdownM"})
@@ -266,37 +282,134 @@ end
 if spoon.WinWin then
     spoon.ModalMgr:new("resizeM")
     local cmodal = spoon.ModalMgr.modal_list["resizeM"]
-    cmodal:bind('', 'escape', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
-    cmodal:bind('', 'Q', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
-    cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
-    cmodal:bind('', 'A', 'Move Leftward', function() spoon.WinWin:stepMove("left") end, nil, function() spoon.WinWin:stepMove("left") end)
-    cmodal:bind('', 'D', 'Move Rightward', function() spoon.WinWin:stepMove("right") end, nil, function() spoon.WinWin:stepMove("right") end)
-    cmodal:bind('', 'W', 'Move Upward', function() spoon.WinWin:stepMove("up") end, nil, function() spoon.WinWin:stepMove("up") end)
-    cmodal:bind('', 'S', 'Move Downward', function() spoon.WinWin:stepMove("down") end, nil, function() spoon.WinWin:stepMove("down") end)
-    cmodal:bind('', 'H', 'Lefthalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfleft") end)
-    cmodal:bind('', 'L', 'Righthalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfright") end)
-    cmodal:bind('', 'K', 'Uphalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfup") end)
-    cmodal:bind('', 'J', 'Downhalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfdown") end)
-    cmodal:bind('', 'Y', 'NorthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNW") end)
-    cmodal:bind('', 'O', 'NorthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNE") end)
-    cmodal:bind('', 'U', 'SouthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSW") end)
-    cmodal:bind('', 'I', 'SouthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSE") end)
-    cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("fullscreen") end)
-    cmodal:bind('', 'C', 'Center Window', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("center") end)
-    cmodal:bind('', '=', 'Stretch Outward', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
-    cmodal:bind('', '-', 'Shrink Inward', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
-    cmodal:bind('shift', 'H', 'Move Leftward', function() spoon.WinWin:stepResize("left") end, nil, function() spoon.WinWin:stepResize("left") end)
-    cmodal:bind('shift', 'L', 'Move Rightward', function() spoon.WinWin:stepResize("right") end, nil, function() spoon.WinWin:stepResize("right") end)
-    cmodal:bind('shift', 'K', 'Move Upward', function() spoon.WinWin:stepResize("up") end, nil, function() spoon.WinWin:stepResize("up") end)
-    cmodal:bind('shift', 'J', 'Move Downward', function() spoon.WinWin:stepResize("down") end, nil, function() spoon.WinWin:stepResize("down") end)
-    cmodal:bind('', 'left', 'Move to Left Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("left") end)
-    cmodal:bind('', 'right', 'Move to Right Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("right") end)
-    cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("up") end)
-    cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("down") end)
-    cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("next") end)
-    cmodal:bind('', '[', 'Undo Window Manipulation', function() spoon.WinWin:undo() end)
-    cmodal:bind('', ']', 'Redo Window Manipulation', function() spoon.WinWin:redo() end)
-    cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
+    cmodal:bind('', 'escape', 'Deactivate resizeM', function()
+        spoon.ModalMgr:deactivate({"resizeM"})
+    end)
+    cmodal:bind('', 'Q', 'Deactivate resizeM', function()
+        spoon.ModalMgr:deactivate({"resizeM"})
+    end)
+    cmodal:bind('', 'tab', 'Toggle Cheatsheet', function()
+        spoon.ModalMgr:toggleCheatsheet()
+    end)
+    cmodal:bind('', 'A', 'Move Leftward', function()
+        spoon.WinWin:stepMove("left")
+    end, nil, function()
+        spoon.WinWin:stepMove("left")
+    end)
+    cmodal:bind('', 'D', 'Move Rightward', function()
+        spoon.WinWin:stepMove("right")
+    end, nil, function()
+        spoon.WinWin:stepMove("right")
+    end)
+    cmodal:bind('', 'W', 'Move Upward', function()
+        spoon.WinWin:stepMove("up")
+    end, nil, function()
+        spoon.WinWin:stepMove("up")
+    end)
+    cmodal:bind('', 'S', 'Move Downward', function()
+        spoon.WinWin:stepMove("down")
+    end, nil, function()
+        spoon.WinWin:stepMove("down")
+    end)
+    cmodal:bind('', 'H', 'Lefthalf of Screen', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("halfleft")
+    end)
+    cmodal:bind('', 'L', 'Righthalf of Screen', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("halfright")
+    end)
+    cmodal:bind('', 'K', 'Uphalf of Screen', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("halfup")
+    end)
+    cmodal:bind('', 'J', 'Downhalf of Screen', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("halfdown")
+    end)
+    cmodal:bind('', 'Y', 'NorthWest Corner', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("cornerNW")
+    end)
+    cmodal:bind('', 'O', 'NorthEast Corner', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("cornerNE")
+    end)
+    cmodal:bind('', 'U', 'SouthWest Corner', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("cornerSW")
+    end)
+    cmodal:bind('', 'I', 'SouthEast Corner', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("cornerSE")
+    end)
+    cmodal:bind('', 'F', 'Fullscreen', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("fullscreen")
+    end)
+    cmodal:bind('', 'C', 'Center Window', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveAndResize("center")
+    end)
+    cmodal:bind('', '=', 'Stretch Outward', function()
+        spoon.WinWin:moveAndResize("expand")
+    end, nil, function()
+        spoon.WinWin:moveAndResize("expand")
+    end)
+    cmodal:bind('', '-', 'Shrink Inward', function()
+        spoon.WinWin:moveAndResize("shrink")
+    end, nil, function()
+        spoon.WinWin:moveAndResize("shrink")
+    end)
+    cmodal:bind('shift', 'H', 'Move Leftward', function()
+        spoon.WinWin:stepResize("left")
+    end, nil, function()
+        spoon.WinWin:stepResize("left")
+    end)
+    cmodal:bind('shift', 'L', 'Move Rightward', function()
+        spoon.WinWin:stepResize("right")
+    end, nil, function()
+        spoon.WinWin:stepResize("right")
+    end)
+    cmodal:bind('shift', 'K', 'Move Upward', function()
+        spoon.WinWin:stepResize("up")
+    end, nil, function()
+        spoon.WinWin:stepResize("up")
+    end)
+    cmodal:bind('shift', 'J', 'Move Downward', function()
+        spoon.WinWin:stepResize("down")
+    end, nil, function()
+        spoon.WinWin:stepResize("down")
+    end)
+    cmodal:bind('', 'left', 'Move to Left Monitor', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveToScreen("left")
+    end)
+    cmodal:bind('', 'right', 'Move to Right Monitor', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveToScreen("right")
+    end)
+    cmodal:bind('', 'up', 'Move to Above Monitor', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveToScreen("up")
+    end)
+    cmodal:bind('', 'down', 'Move to Below Monitor', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveToScreen("down")
+    end)
+    cmodal:bind('', 'space', 'Move to Next Monitor', function()
+        spoon.WinWin:stash()
+        spoon.WinWin:moveToScreen("next")
+    end)
+    cmodal:bind('', '[', 'Undo Window Manipulation', function()
+        spoon.WinWin:undo()
+    end)
+    cmodal:bind('', ']', 'Redo Window Manipulation', function()
+        spoon.WinWin:redo()
+    end)
+    cmodal:bind('', '`', 'Center Cursor', function()
+        spoon.WinWin:centerCursor()
+    end)
 
     -- Register resizeM with modal supervisor
     hsresizeM_keys = hsresizeM_keys or {"alt", "R"}
@@ -340,7 +453,9 @@ end
 if spoon.AClock then
     hsaclock_keys = hsaclock_keys or {"alt", "T"}
     if string.len(hsaclock_keys[2]) > 0 then
-        spoon.ModalMgr.supervisor:bind(hsaclock_keys[1], hsaclock_keys[2], "Toggle Floating Clock", function() spoon.AClock:toggleShow() end)
+        spoon.ModalMgr.supervisor:bind(hsaclock_keys[1], hsaclock_keys[2], "Toggle Floating Clock", function()
+            spoon.AClock:toggleShow()
+        end)
     end
 end
 
@@ -353,10 +468,15 @@ if string.len(hstype_keys[2]) > 0 then
         local chrome_running = hs.application.applicationsForBundleID("com.google.Chrome")
         if #safari_running > 0 then
             local stat, data = hs.applescript('tell application "Safari" to get {URL, name} of current tab of window 1')
-            if stat then hs.eventtap.keyStrokes("[" .. data[2] .. "](" .. data[1] .. ")") end
+            if stat then
+                hs.eventtap.keyStrokes("[" .. data[2] .. "](" .. data[1] .. ")")
+            end
         elseif #chrome_running > 0 then
-            local stat, data = hs.applescript('tell application "Google Chrome" to get {URL, title} of active tab of window 1')
-            if stat then hs.eventtap.keyStrokes("[" .. data[2] .. "](" .. data[1] .. ")") end
+            local stat, data = hs.applescript(
+                'tell application "Google Chrome" to get {URL, title} of active tab of window 1')
+            if stat then
+                hs.eventtap.keyStrokes("[" .. data[2] .. "](" .. data[1] .. ")")
+            end
         end
     end)
 end
@@ -365,7 +485,17 @@ end
 -- Register Hammerspoon console
 hsconsole_keys = hsconsole_keys or {"alt", "Z"}
 if string.len(hsconsole_keys[2]) > 0 then
-    spoon.ModalMgr.supervisor:bind(hsconsole_keys[1], hsconsole_keys[2], "Toggle Hammerspoon Console", function() hs.toggleConsole() end)
+    spoon.ModalMgr.supervisor:bind(hsconsole_keys[1], hsconsole_keys[2], "Toggle Hammerspoon Console", function()
+        hs.toggleConsole()
+    end)
+end
+
+hswallpaper_refresh_keys = hswallpaper_refresh_keys or {"ctrl-alt", "R"}
+if string.len(hswallpaper_refresh_keys[2]) > 0 then
+    spoon.ModalMgr.supervisor:bind(hswallpaper_refresh_keys[1], hswallpaper_refresh_keys[2], "Fresh Wall Paper",
+        function()
+            spoon.UnsplashZ.refresh()
+        end)
 end
 
 ----------------------------------------------------------------------------------------------------

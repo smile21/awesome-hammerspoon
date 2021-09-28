@@ -217,7 +217,8 @@ function obj:createAndRefreshPanel()
                 end
                 local cscreen = hs.screen.mainScreen()
                 local cres = cscreen:fullFrame()
-                obj.panel:frame({x=cres.x+cres.w-400, y=cres.y+cres.h-50*#obj.panelItems-52, w=400, h=50*#obj.panelItems})
+                local count = math.max(#obj.panelItems, 1)
+                obj.panel:frame({x=cres.x+cres.w-400, y=cres.y+cres.h-50*count-52, w=400, h=50*count})
                 -- Add task items to aria2 panel
                 for idx,val in ipairs(obj.panelItems) do
                     obj.panel[idx+1] = {type="canvas", canvas=val.canvas, frame={x="0%", y=tostring(1/#obj.panelItems*(idx-1)), w="100%", h=tostring(1/#obj.panelItems)}}
