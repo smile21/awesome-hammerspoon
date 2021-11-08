@@ -40,7 +40,7 @@ hs.loadSpoon("ModalMgr")
 if not hspoon_list then
     hspoon_list = {"AClock", -- "BingDaily",
     "CircleClock", "ClipShow", "CountDown", "HCalendar", "HSaria2", "HSearch", "SpeedMenu", "WinWin", "FnMate",
-                   "UnsplashZ"}
+                   "UnsplashZ", "Caffeine"}
 end
 
 -- Load those Spoons
@@ -497,6 +497,11 @@ if string.len(hswallpaper_refresh_keys[2]) > 0 then
             spoon.UnsplashZ.refresh()
         end)
 end
+
+-- load caffeine and start it
+spoon.Caffeine:bindHotkeys({
+    toggle = hscaffeine_keys or {"shift-alt", "L"}
+}):start()
 
 ----------------------------------------------------------------------------------------------------
 -- Finally we initialize ModalMgr supervisor
