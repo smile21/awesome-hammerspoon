@@ -18,7 +18,7 @@ local function unsplashRequest()
     local user_agent_str =
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
     obj.pic_url = hs.execute(
-        [[ /usr/bin/curl 'https://source.unsplash.com/2560x1600/?wallpapers,desktop' |  perl -ne ' print "$1" if /href="([^"]+)"/ ' ]])
+        [[ /usr/bin/curl 'https://source.unsplash.com/2560x1600/' |  perl -ne ' print "$1" if /href="([^"]+)"/ ' ]])
     if obj.pic_url == nil or obj.pic_url == '' then
         return
     end
